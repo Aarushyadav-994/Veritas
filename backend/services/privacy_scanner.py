@@ -27,7 +27,7 @@ class PrivacyScanner:
             "mask_func": lambda s: s.split("@")[0][:2] + "***@" + s.split("@")[1]
         },
         "Phone Number": {
-            "regex": re.compile(r"(?:\+?91[\-\s]?)?[6-9]\d{9}\b|\b(?:\+?1[\-\s]?)?\(?\d{3}\)?[\-\s]?\d{3}[\-\s]?\d{4}\b"),
+            "regex": re.compile(r"(?:\+?91[\-\s]?)?[6-9]\d{4}[\-\s]?\d{5}\b|\b(?:\+?1[\-\s]?)?\(?\d{3}\)?[\-\s]?\d{3}[\-\s]?\d{4}\b"),
             "risk": "MODERATE",
             "disclosure_risk": "Personal mobile or direct telephone number. Facilitates unsolicited outreach, SMS spoofing, or credential social engineering.",
             "mitigation": "Replace with official company switchboard or mask central digits.",
