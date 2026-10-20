@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --veritas-navy: #15202B;
+    --veritas-charcoal: #263238;
+    --veritas-paper: #F5F3ED;
+    --veritas-paper-muted: #EFECE4;
+    --veritas-brass: #AD925B;
+    --veritas-brass-subtle: #E8E1D3;
+    --veritas-slate: #667085;
+    --veritas-slate-light: #98A2B3;
+    --veritas-border: #D0D5DD;
+    --veritas-border-dark: #374151;
+    --veritas-danger: #B42318;
+    --veritas-danger-bg: #FEF3F2;
+    --veritas-warning: #B54708;
+    --veritas-warning-bg: #FFFAEB;
+    --veritas-success: #067647;
+    --veritas-success-bg: #ECFDF3;
+
+    --background: #F5F3ED;
+    --foreground: #15202B;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+  }
+
+  /* Monospace for references, hashes, clause IDs */
+  .font-mono-legal {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-feature-settings: "tnum";
+  }
+
+  /* Serif for official legal titles, document headers */
+  .font-serif-legal {
+    font-family: "Georgia", "Cambria", "Times New Roman", Times, serif;
+  }
+}
+
+/* Restrained custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #EFECE4;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
