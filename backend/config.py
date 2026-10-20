@@ -1,5 +1,9 @@
 import os
 from pydantic import BaseModel
+from dotenv import load_dotenv
+
+# Automatically load from root .env file if present
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
 
 class Settings(BaseModel):
     app_name: str = "Veritas AI - Legal Document Intelligence & Investigation Platform"
