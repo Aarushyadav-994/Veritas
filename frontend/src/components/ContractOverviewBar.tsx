@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertTriangle, Info, Calendar, Users, FileCheck, ChevronDown, ChevronUp } from "lucide-react";
+import { AlertTriangle, Info, Calendar, Users, FileCheck, ChevronDown, ChevronUp, Scale, Clock, DollarSign } from "lucide-react";
 
 interface ContractOverviewBarProps {
   documentSummary: {
@@ -16,9 +16,43 @@ interface ContractOverviewBarProps {
     category: string;
     methodology_explanation?: string;
     contributing_factors?: Array<{ factor: string; impact: string; detail: string }>;
+    dimension_scores?: {
+      financial_exposure?: number;
+      contractual_imbalance?: number;
+      data_confidentiality?: number;
+      operational_continuity?: number;
+      drafting_ambiguity?: number;
+    };
   };
   pageCount: number;
   engineName?: string;
+  renewalTimeline?: {
+    calculation_status?: string;
+    effective_date?: string;
+    initial_term_months?: number;
+    initial_term_end_date?: string;
+    notice_period_days?: number;
+    notice_deadline_date?: string;
+    arithmetic_formula?: string;
+    consequences_of_missed_deadline?: string;
+  };
+  financialAnalytics?: {
+    liability_cap?: {
+      formula_identified?: string;
+      illustrative_cap_amount?: string;
+      calculation_methodology?: string;
+      assumptions?: string[];
+      carve_outs_detected?: string;
+    };
+    payment_penalties?: {
+      stated_rate?: string;
+      simple_annualized_rate?: string;
+      effective_annual_rate?: string;
+      is_compounded?: boolean;
+      dispute_window_days?: number;
+      payment_due_days?: number;
+    };
+  };
 }
 
 export const ContractOverviewBar: React.FC<ContractOverviewBarProps> = ({
@@ -26,8 +60,11 @@ export const ContractOverviewBar: React.FC<ContractOverviewBarProps> = ({
   overallRisk,
   pageCount,
   engineName,
+  renewalTimeline,
+  financialAnalytics,
 }) => {
   const [showMethodology, setShowMethodology] = useState(false);
+  const [showCalculators, setShowCalculators] = useState(false);
 
   const score = overallRisk?.score || 0;
   const category = overallRisk?.category || "NEEDS REVIEW";
@@ -77,7 +114,7 @@ export const ContractOverviewBar: React.FC<ContractOverviewBarProps> = ({
                 onClick={() => setShowMethodology(!showMethodology)}
                 className="text-xs text-[#AD925B] hover:text-[#8F7644] underline flex items-center justify-end space-x-0.5 cursor-pointer ml-auto"
               >
-                <span>Methodology & Factors</span>
+                <span>Methodology & Dimensions</span>
                 {showMethodology ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
             </div>
@@ -124,23 +161,116 @@ export const ContractOverviewBar: React.FC<ContractOverviewBarProps> = ({
           </div>
         </div>
 
+        {/* Dynamic Contract Arithmetic Callout Strip */}
+        <div className="mt-3 pt-3 border-t border-[#EFECE4] flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex flex-wrap items-center gap-4">
+            {renewalTimeline?.notice_deadline_date && (
+              <div className="flex items-center space-x-1.5 text-[#263238] bg-[#FAFAF8] px-2.5 py-1 rounded border border-[#EFECE4]">
+                <Clock className="w-3.5 h-3.5 text-[#B54708]" />
+                <span className="text-[#667085]">Non-Renewal Deadline:</span>
+                <span className="font-mono font-bold text-[#15202B]">{renewalTimeline.notice_deadline_date}</span>
+              </div>
+            )}
+
+            {financialAnalytics?.liability_cap?.illustrative_cap_amount && (
+              <div className="flex items-center space-x-1.5 text-[#263238] bg-[#FAFAF8] px-2.5 py-1 rounded border border-[#EFECE4]">
+                <DollarSign className="w-3.5 h-3.5 text-[#AD925B]" />
+                <span className="text-[#667085]">Illustrative Liability Ceiling:</span>
+                <span className="font-mono font-bold text-[#15202B]">{financialAnalytics.liability_cap.illustrative_cap_amount}</span>
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => setShowCalculators(!showCalculators)}
+            className="text-xs text-[#AD925B] hover:text-[#8F7644] underline flex items-center space-x-1 cursor-pointer ml-auto"
+          >
+            <span>View Calculation Arithmetic</span>
+            {showCalculators ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          </button>
+        </div>
+
+        {/* Expandable Calculation Assumptions Drawer */}
+        {showCalculators && (
+          <div className="mt-3 pt-3 border-t border-[#EFECE4] bg-[#FAFAF8] p-4 rounded border border-[#D0D5DD] text-xs space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-[#EFECE4]">
+              <span className="font-mono font-bold uppercase text-[#15202B]">
+                Dynamic Milestone & Financial Arithmetic
+              </span>
+              <span className="text-[10px] font-mono text-[#667085]">
+                Extracted Deterministically from Contract Covenants
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-3 bg-[#FFFFFF] rounded border border-[#EFECE4] space-y-1.5">
+                <span className="font-bold text-[#15202B] block">Renewal Timeline Arithmetic:</span>
+                <p className="font-mono text-[11px] text-[#263238]">{renewalTimeline?.arithmetic_formula}</p>
+                <div className="text-[11px] text-[#667085]">
+                  <span>Initial Term: {renewalTimeline?.initial_term_months} months. Notice Window: {renewalTimeline?.notice_period_days} days.</span>
+                </div>
+                <div className="text-[11px] text-[#B42318] pt-1 border-t border-[#EFECE4]">
+                  {renewalTimeline?.consequences_of_missed_deadline}
+                </div>
+              </div>
+
+              <div className="p-3 bg-[#FFFFFF] rounded border border-[#EFECE4] space-y-1.5">
+                <span className="font-bold text-[#15202B] block">Liability Cap Calculation Methodology:</span>
+                <p className="font-mono text-[11px] text-[#263238]">{financialAnalytics?.liability_cap?.calculation_methodology}</p>
+                <div className="text-[11px] text-[#667085]">
+                  <span>Carve-Outs Detected: {financialAnalytics?.liability_cap?.carve_outs_detected}</span>
+                </div>
+                <div className="text-[11px] text-[#B54708] pt-1 border-t border-[#EFECE4]">
+                  {financialAnalytics?.liability_cap?.assumptions?.[0]}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Expandable Scoring Methodology & Contributing Factors Drawer */}
         {showMethodology && (
           <div className="mt-4 pt-4 border-t border-[#EFECE4] bg-[#FAFAF8] p-4 rounded border border-[#D0D5DD]">
             <div className="flex items-start justify-between">
               <div>
                 <h4 className="text-xs font-mono uppercase font-bold text-[#15202B]">
-                  Transparent Scoring Methodology
+                  Deterministic Multi-Dimensional Scoring Model
                 </h4>
                 <p className="text-xs text-[#667085] mt-1 leading-relaxed">
                   {overallRisk?.methodology_explanation ||
-                    "Score reflects the presence of unilateral termination provisions, uncapped indemnities, automatic rollover terms, and omitted statutory protections."}
+                    "Score reflects weighted distribution across Financial (30%), Imbalance (25%), Data Security (20%), Operational (15%), and Ambiguity (10%)."}
                 </p>
               </div>
               <span className="text-[10px] font-mono text-[#667085] bg-[#FFFFFF] px-2 py-0.5 border border-[#D0D5DD] rounded">
                 Non-Evaluative Decision Support
               </span>
             </div>
+
+            {/* Dimension Breakdown Gauges */}
+            {overallRisk?.dimension_scores && (
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-3 pt-3 border-t border-[#EFECE4] text-[11px]">
+                <div className="p-2 bg-[#FFFFFF] rounded border border-[#EFECE4] text-center">
+                  <div className="text-[#667085] font-mono text-[10px]">Financial (30%)</div>
+                  <div className="font-bold font-mono text-sm text-[#B42318]">{overallRisk.dimension_scores.financial_exposure}/100</div>
+                </div>
+                <div className="p-2 bg-[#FFFFFF] rounded border border-[#EFECE4] text-center">
+                  <div className="text-[#667085] font-mono text-[10px]">Imbalance (25%)</div>
+                  <div className="font-bold font-mono text-sm text-[#B42318]">{overallRisk.dimension_scores.contractual_imbalance}/100</div>
+                </div>
+                <div className="p-2 bg-[#FFFFFF] rounded border border-[#EFECE4] text-center">
+                  <div className="text-[#667085] font-mono text-[10px]">Data & Privacy (20%)</div>
+                  <div className="font-bold font-mono text-sm text-[#B54708]">{overallRisk.dimension_scores.data_confidentiality}/100</div>
+                </div>
+                <div className="p-2 bg-[#FFFFFF] rounded border border-[#EFECE4] text-center">
+                  <div className="text-[#667085] font-mono text-[10px]">Operational (15%)</div>
+                  <div className="font-bold font-mono text-sm text-[#B42318]">{overallRisk.dimension_scores.operational_continuity}/100</div>
+                </div>
+                <div className="p-2 bg-[#FFFFFF] rounded border border-[#EFECE4] text-center">
+                  <div className="text-[#667085] font-mono text-[10px]">Ambiguity (10%)</div>
+                  <div className="font-bold font-mono text-sm text-[#667085]">{overallRisk.dimension_scores.drafting_ambiguity}/100</div>
+                </div>
+              </div>
+            )}
 
             {overallRisk?.contributing_factors && overallRisk.contributing_factors.length > 0 && (
               <div className="mt-3 pt-3 border-t border-[#EFECE4]">

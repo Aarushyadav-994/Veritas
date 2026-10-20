@@ -170,6 +170,8 @@ export default function Home() {
               overallRisk={sessionData.overall_risk}
               pageCount={sessionData.page_count}
               engineName={sessionData.analysis_engine}
+              renewalTimeline={sessionData.renewal_timeline}
+              financialAnalytics={sessionData.financial_analytics}
             />
 
             {/* Main Tabs Container */}
@@ -268,6 +270,7 @@ export default function Home() {
                   <ClauseFindingsTab
                     clauses={sessionData.clauses || []}
                     missingProtections={sessionData.missing_protections || []}
+                    crossClauseAnalysis={sessionData.cross_clause_analysis}
                     onDraftAlternative={handleOpenDraftAlternative}
                   />
                 )}
